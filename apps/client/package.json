@@ -15,7 +15,8 @@
   },
   "dependencies": {
     "@parcnet-js/app-connector": "^1.0.0",
-    "@parcnet-js/ticket-spec": "^1.0.0",
-    "@pcd/gpc": "^0.3.0"
+    "@parcnet-js/ticket-spec": "^1.1.7",
+    "@pcd/gpc": "^0.3.0",
+    "@repo/shared": "workspace:*"
   }
 }

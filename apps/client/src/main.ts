@@ -1,8 +1,7 @@
-import { ticketProofRequest } from "@parcnet-js/ticket-spec";
 import "./style.css";
 import { connect, ParcnetAPI, Zapp } from "@parcnet-js/app-connector";
-import { boundConfigToJSON } from "@pcd/gpc";
 import { serializeProofResult } from "./serialize";
+import { DevconTicketProofRequest } from "@repo/shared";
 
 const myApp: Zapp = {
   name: "Devcon Ticket Authentication",
@@ -14,7 +13,6 @@ const myApp: Zapp = {
 let z: ParcnetAPI | undefined = undefined;
 
 async function main(): Promise<void> {
-  console.log("connecting");
   z = await connect(
     myApp,
     document.querySelector<HTMLDivElement>("#connector")!,
@@ -26,24 +24,11 @@ async function main(): Promise<void> {
   document
     .querySelector<HTMLButtonElement>("#authenticate")!
     .addEventListener("click", async () => {
-      const req = ticketProofRequest({
-        classificationTuples: [
-          {
-            signerPublicKey: "YwahfUdUYehkGMaWh0+q3F8itx2h8mybjPmt8CmTJSs",
-            eventId: "5074edf5-f079-4099-b036-22223c0c6995",
-          },
-        ],
-        fieldsToReveal: {
-          attendeeEmail: true,
-          attendeeName: true,
-          eventId: true,
-        },
-      });
       document
         .querySelector<HTMLButtonElement>("#authenticate")!
         .setAttribute("disabled", "true");
       try {
-        const proof = await z?.gpc.prove({ request: req.schema, collectionIds: ["Tickets"] });
+        const proof = await z?.gpc.prove({ request: DevconTicketProofRequest.schema, collectionIds: ["Tickets"] });
         document
           .querySelector<HTMLButtonElement>("#authenticate")!
           .setAttribute("disabled", "true");
