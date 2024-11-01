@@ -1,6 +1,6 @@
 import express, { Express, Request, Response } from "express";
 import dotenv from "dotenv";
-import { gpcVerify } from "@pcd/gpc";
+import { boundConfigFromJSON, gpcVerify, revealedClaimsFromJSON } from "@pcd/gpc";
 import path from "path";
 import { ProveResult } from "./serialize";
 
@@ -9,7 +9,7 @@ const GPC_ARTIFACTS_PATH = path.join(__dirname, "..", "node_modules", "@pcd", "p
 dotenv.config();
 
 const app: Express = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 4000;
 
 app.use(express.json({
   reviver(key, value) {
@@ -25,12 +25,13 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 app.post("/verify", async (req: Request, res: Response) => {
-  const proveResult: ProveResult = req.body;
-  console.log(proveResult);
-  const { proof, revealedClaims, boundConfig } = proveResult;
+  const proofResult = req.body;
+  const { serializedBoundConfig, serializedRevealedClaims, proof } = proofResult;
+  const boundConfig = boundConfigFromJSON(serializedBoundConfig);
+  const revealedClaims = revealedClaimsFromJSON(serializedRevealedClaims);
   const result = await gpcVerify(proof, boundConfig, revealedClaims, GPC_ARTIFACTS_PATH);
   console.log(result);
-  res.send("OK");
+  res.json({ result });
 });
 
 app.listen(port, () => {
