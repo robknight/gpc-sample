@@ -7,12 +7,12 @@ export type ProveResult = Extract<
 >;
 
 export function serializeProofResult(result: ProveResult): string {
-  const proofResult = {
+  const serializedProofResult = {
     proof: result.proof,
     serializedBoundConfig: boundConfigToJSON(result.boundConfig),
     serializedRevealedClaims: revealedClaimsToJSON(result.revealedClaims),
   }
-  return JSON.stringify(proofResult);
+  return JSON.stringify(serializedProofResult);
 }
 
 // export function deserializeProofResult(result: string): ProveResult {
