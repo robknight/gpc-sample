@@ -16,7 +16,7 @@ async function main(): Promise<void> {
   z = await connect(
     myApp,
     document.querySelector<HTMLDivElement>("#connector")!,
-    "https://dev.local:3000"
+    "https://zupass.org"
   );
   document
     .querySelector<HTMLButtonElement>("#authenticate")!
@@ -39,13 +39,22 @@ async function main(): Promise<void> {
       `;
           const serializedProof = serializeProofResult(proof);
           console.log(serializedProof);
-          await fetch("http://localhost:4000/verify", {
+          const { result } = await (await fetch("http://localhost:4000/verify", {
             method: "POST",
             body: serializedProof,
             headers: {
               "Content-Type": "application/json",
             }
-          });
+          })).json();
+          if (result === true) {
+            document.querySelector<HTMLDivElement>("#details")!.innerHTML = `
+          <p>Ticket is valid</p>
+        `;
+          } else {
+            document.querySelector<HTMLDivElement>("#details")!.innerHTML = `
+          <p>Ticket is invalid</p>
+        `;
+          }
         } else {
           if (proof?.error) {
             document.querySelector<HTMLDivElement>("#details")!.innerHTML = `

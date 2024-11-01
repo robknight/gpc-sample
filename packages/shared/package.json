@@ -18,6 +18,6 @@
     "typescript": "^5.5.3"
   },
   "dependencies": {
-    "@parcnet-js/ticket-spec": "^1.1.7"
+    "@parcnet-js/ticket-spec": "^1.1.9"
   }
 }

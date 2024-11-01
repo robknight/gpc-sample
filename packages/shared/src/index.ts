@@ -3,7 +3,7 @@ import { ticketProofRequest } from "@parcnet-js/ticket-spec";
 export const DevconTicketProofRequest = ticketProofRequest({
   classificationTuples: [
     {
-      signerPublicKey: "ZeZomy3iAu0A37TrJUAJ+76eYjiB3notl9jiRF3vRJE",
+      signerPublicKey: "YwahfUdUYehkGMaWh0+q3F8itx2h8mybjPmt8CmTJSs",
       eventId: "5074edf5-f079-4099-b036-22223c0c6995",
     },
   ],
