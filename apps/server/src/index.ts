@@ -17,6 +17,11 @@ app.get("/", (req: Request, res: Response) => {
   res.send("Express + TypeScript Server");
 });
 
+/**
+ * Verify a proof.
+ * This is a very simple Express route, which deserializes the proof, claims, and configuration,
+ * and then verifies the proof.
+ */
 app.post("/verify", async (req: Request, res: Response) => {
   const proofResult = req.body;
 
@@ -39,6 +44,16 @@ app.post("/verify", async (req: Request, res: Response) => {
   // Set membership lists to values from the proof request
   revealedClaims.membershipLists = membershipLists;
   
+  // Verify the proof
+  // Of the data we received from the client, we pass in the `proof` unmodified, but `boundConfig` uses
+  // values from the proof request, with only the `circuitIdentifier` being taken from values received
+  // from the client.
+  // The `revealedClaims` also use values from the proof request, but also include values received
+  // from the client.
+  // This ensure that we are verifying both that the proof is "cryptographically" valid, and that the
+  // config used is the config we expect the proof to have had.
+  // If the client sent us a combination of proof, claims, and config that does not match our proof request,
+  // the proof will not verify.
   const result = await gpcVerify(proof, boundConfig, revealedClaims, GPC_ARTIFACTS_PATH);
   
   res.json({ result });

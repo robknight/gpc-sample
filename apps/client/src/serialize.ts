@@ -6,6 +6,11 @@ export type ProveResult = Extract<
   { success: true }
 >;
 
+/**
+ * Serialize a proof result for transmission to the server
+ * @param result - The proof result to serialize
+ * @returns A JSON string representing the proof result
+ */
 export function serializeProofResult(result: ProveResult): string {
   const serializedProofResult = {
     proof: result.proof,
@@ -14,11 +19,3 @@ export function serializeProofResult(result: ProveResult): string {
   }
   return JSON.stringify(serializedProofResult);
 }
-
-// export function deserializeProofResult(result: string): ProveResult {
-//   return JSON.parse(result, (key, value) =>
-//     typeof value === "string" && value.startsWith("__BIGINT__")
-//       ? BigInt(value.slice(11))
-//       : value
-//   );
-// }
